@@ -4,6 +4,7 @@ import replace from 'rollup-plugin-replace';
 import uglify from 'rollup-plugin-uglify';
 
 export default {
+  moduleName: 'Hasura',
   entry: 'src/main.js',
   dest: 'build/js/main.min.js',
   format: 'iife',

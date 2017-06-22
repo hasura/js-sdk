@@ -1,5 +1,5 @@
-if (ENV === 'production') {
-  console.warn('Hi');
-} else {
-  console.warn('In dev mode');
-}
+const coolFunction = () => {
+  console.log('This is working');
+};
+
+export default coolFunction;
