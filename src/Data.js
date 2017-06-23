@@ -27,8 +27,25 @@ class Data {
       });
   }
 
+  queryTemplateAsRole(role, template, params, onSuccess, onError = defaultExceptionHandler) {
+    this.queryTemplate(template, params, onSuccess, onError, role);
+  }
+
   queryTemplate(template, params, onSuccess, onError = defaultExceptionHandler, role = null) {
-    // TODO
+    const opts = {service: 'data', path: '/v1/template/' + template, json: params};
+    if (role) {
+      opts.role = role;
+    }
+
+    this.hasura.fetch(
+      opts,
+      (result) => {
+        onSuccess(result);
+      },
+      (e) => {
+        logError(e);
+        onError(e);
+      });
   }
 }
 
