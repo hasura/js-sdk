@@ -31,6 +31,13 @@ const maybeResponseJSON = (options, response, onSuccess, onException = defaultEx
     });
 };
 
+const hasuraGenUrl = (projectConfig) => {
+  return (service, path) => {
+    const url = projectConfig.scheme + '://' + service + '.' + projectConfig.baseDomain + path;
+    return url;
+  };
+};
+
 const hasuraFetch = (user, projectConfig) => {
 
   return (options, onSuccess, onError, onException = defaultExceptionHandler) => {
@@ -39,7 +46,7 @@ const hasuraFetch = (user, projectConfig) => {
       return;
     }
 
-    const headers = {...defaultHeaders};
+    const headers = {...defaultHeaders, ...options.headers};
 
     // Add the authorization header
     if (user.token && (options.role !== 'anonymous')) {
@@ -50,12 +57,12 @@ const hasuraFetch = (user, projectConfig) => {
       headers['X-Hasura-Role'] = options.role;
     }
 
-    const url = projectConfig.scheme + '://' + options.service + '.' + projectConfig.baseDomain + options.path;
+    const url = hasuraGenUrl(projectConfig)(options.service, options.path);
 
     fetch(url, {
       method: options.method ? options.method : 'POST',
       headers,
-      body: options.json ? JSON.stringify(options.json) : null
+      body: options.json ? JSON.stringify(options.json) : (options.body ? options.body : null)
     }).then(
       (response) => {
         if (response.status >= 200 && response.status < 300) {
@@ -89,4 +96,4 @@ const hasuraFetch = (user, projectConfig) => {
 
 };
 
-export default hasuraFetch;
+export {hasuraFetch, hasuraGenUrl};

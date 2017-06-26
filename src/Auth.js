@@ -7,6 +7,44 @@ class Auth {
     this.hasura = hasura;
   }
 
+  /* options: {
+   *   recaptcha: ''
+   * }
+   *
+   */
+  signup (password, options, onSuccess, onError = defaultExceptionHandler) {
+    if (this.hasura.user.token) {
+      logError('A user session already exists. Use this.hasura.logout() first?');
+      return;
+    }
+
+    const body = { username: this.hasura.user.username, password };
+    if (this.hasura.user.email) {
+      body.email = this.hasura.user.email;
+    }
+    if (this.hasura.user.mobile) {
+      body.mobile = this.hasura.user.mobile;
+    }
+
+    this.hasura.fetch(
+      {service: 'auth', path: '/signup', json: body},
+      (user) => {
+        this.hasura.user = {
+          ...this.hasura.user,
+          id: user.hasura_id,
+          roles: user.hasura_roles
+        };
+        if (user.auth_token) {
+          this.hasura.user.token = user.auth_token;
+        }
+        this.hasura.saveUser();
+        onSuccess();
+      },
+      (r) => {
+        console.log(r);
+        onError();
+      });
+  }
   login (password, onSuccess, onError = defaultExceptionHandler) {
     if (this.hasura.user.token) {
       logError('A user session already exists. Use this.hasura.logout() first?');

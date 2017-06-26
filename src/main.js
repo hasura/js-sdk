@@ -1,6 +1,7 @@
-import hasuraFetch from './hasuraFetch';
+import {hasuraFetch, hasuraGenUrl} from './hasuraFetch';
 import Auth from './Auth';
 import Data from './Data';
+import File from './File';
 
 const anonUser = {
   username: 'anonymous',
@@ -36,12 +37,15 @@ class hasura {
     this.resetFetch();
     this.auth = new Auth(this);
     this.data = new Data(this);
+    this.file = new File(this);
   }
 
   resetFetch() {
     this.fetch = hasuraFetch(this.user, this.projectConfig);
+    this.genUrl = hasuraGenUrl(this.projectConfig);
     return this;
   }
+
 
   setProject (name) {
     this.projectConfig.baseDomain = name + '.hasura-app.io';
