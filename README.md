@@ -66,6 +66,8 @@ hasura.user // will be reset to anonymous user
 
 ### Data query
 
+**NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
+
 ```javascript
 // This will use the hasura.user session object to send
 // if hasura.user.token === null, then request is made as an anonymous user (no auth token)
@@ -90,6 +92,8 @@ hasura.data.queryAsRole('user'
 ```
 
 ### Data query-templates
+
+**NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
 
 ```javascript
 // This will use the hasura.user session object to send
@@ -132,10 +136,12 @@ The Hasura JS SDK provides convenience functions to upload and download files.
       (successResponse) => {
         fileId = successResponse.file_id;
         console.log('Uploaded file: ' + fileId);
+        // your code goes here
       },
       (errorResponse) => {
         console.log('Error uploading file');
         console.log(errorResponse);
+        // your code goes here
       });
 
     hasura.file.download(fileId); // This will use the HTML5 download attribute to start downloading the file
