@@ -46,7 +46,6 @@ class hasura {
     return this;
   }
 
-
   setProject (name) {
     this.projectConfig.baseDomain = name + '.hasura-app.io';
     this.resetFetch();
@@ -66,6 +65,21 @@ class hasura {
 
   setUsername(username) {
     this.user.username = username;
+    this.saveUser();
+  }
+
+  setUserInfo(userInfo) {
+    this.user = {
+      ...this.user,
+      id: userInfo.hasura_id,
+      roles: userInfo.hasura_roles,
+      token: userInfo.auth_token,
+    };
+
+    ['username', 'email', 'mobile'].map(x => {
+      this.user[x] = userInfo[x] ? userInfo[x] : this.user[x];
+    });
+
     this.saveUser();
   }
 
