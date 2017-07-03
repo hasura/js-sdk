@@ -119,7 +119,7 @@ hasura.data.queryTemplateAsRole(
     onError);
 ```
 
-### Filestore uasage
+### Filestore usage
 
 The Hasura JS SDK provides convenience functions to upload and download files.
 
