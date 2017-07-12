@@ -76,7 +76,7 @@ hasura.data.query({
     args: {
         table: 'test',
         columns: ['*']
-    },
+    }},
     onSuccess,
     onError);
 
@@ -86,7 +86,7 @@ hasura.data.queryAsRole('user'
     args: {
         table: 'test',
         columns: ['*']
-    },
+    }},
     onSuccess,
     onError);
 ```
