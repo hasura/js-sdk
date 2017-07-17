@@ -203,9 +203,6 @@ for you to make API requests to APIs deployed as custom microservices on Hasura.
       });
 ```
 
-
-
-
 # Contribution & Development
 
 For development builds:
