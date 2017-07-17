@@ -149,6 +149,62 @@ The Hasura JS SDK provides convenience functions to upload and download files.
     hasura.file.delete(fileId);
 ```
 
+### API requests to custom APIs deployed on Hasura
+
+The Hasura JS SDK provides a simple wrapper over `fetch` to make it easy
+for you to make API requests to APIs deployed as custom microservices on Hasura.
+
+**If you're making a JSON request:**
+```javascript
+    hasura.fetch.upload(
+      {
+        service: 'api',  // the name of your custom service
+        path: '/submit', // the path
+        method: 'POST',  // HTTP method (this is POST by default, so you can ignore this key if it's POST)
+        json: {...},     // set this to an object or an array that will be serialised to make the request body
+        headers: {
+          'X-Custom-Header': '...'
+        }
+      },
+      (jsonResponse) => {
+          // your success handler function
+          console.log(jsonResponse);
+
+          // By the way, jsonResponse is an object or an array
+          // if the response content-type is application/json
+          console.assert(typeof(jsonResponse) === 'object');
+      },
+      (error) => {
+        // your error handler function
+        console.error(error);
+      });
+```
+
+**If you're making a request with a non JSON content-type:**
+```javascript
+    hasura.fetch.upload(
+      {
+        service: 'api',  // the name of your custom service
+        path: '/submit', // the path
+        method: 'POST',  // HTTP method (this is POST by default, so you can ignore this key if it's POST)
+        body: '...',     // set this to a string or a serialised value
+        headers: {
+          'Content-Type': '...' // you must set the content-type, because the default content-type is set to application/json
+        }
+      },
+      (response) => {
+          // your success handler function
+          console.log(response);
+
+      },
+      (error) => {
+        // your error handler function
+        console.error(error);
+      });
+```
+
+
+
 
 # Contribution & Development
 
