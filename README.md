@@ -76,7 +76,7 @@ hasura.data.query({
     args: {
         table: 'test',
         columns: ['*']
-    },
+    }},
     onSuccess,
     onError);
 
@@ -86,7 +86,7 @@ hasura.data.queryAsRole('user'
     args: {
         table: 'test',
         columns: ['*']
-    },
+    }},
     onSuccess,
     onError);
 ```
@@ -119,7 +119,7 @@ hasura.data.queryTemplateAsRole(
     onError);
 ```
 
-### Filestore uasage
+### Filestore usage
 
 The Hasura JS SDK provides convenience functions to upload and download files.
 
