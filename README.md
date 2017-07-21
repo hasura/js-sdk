@@ -68,6 +68,47 @@ hasura.user // will be reset to anonymous user
 
 **NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
 
+    1)onSuccess and onError are functions that you should define.
+    
+For example:
+    
+Option 1:
+
+Use lambdas or anonymous functions directly for handling success/error.
+
+```hasura.data.query({
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }},
+  (data) => { console.log(data); },
+  (error) => { console.log(error); }
+);```
+
+Option 2:
+
+Use predefined functions
+
+```function mySuccessHandler (data) {
+  console.log(data);
+}
+
+function myErrorHandler (e) {
+  console.log(e);
+}
+
+hasura.data.query({
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }},
+  mySuccessHandler,
+  myErrorHandler
+);```
+  
+
 ```javascript
 // This will use the hasura.user session object to send
 // if hasura.user.token === null, then request is made as an anonymous user (no auth token)
