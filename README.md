@@ -72,7 +72,8 @@ hasura.user // will be reset to anonymous user
     
 For example:
     
-```Option 1:
+```
+Option 1:
 
 Use lambdas or anonymous functions directly for handling success/error.
 
