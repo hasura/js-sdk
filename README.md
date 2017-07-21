@@ -67,8 +67,6 @@ hasura.user // will be reset to anonymous user
 ### Data query
 
 **NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
-
-    1)onSuccess and onError are functions that you should define.
     
 For example:
     
