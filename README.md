@@ -72,11 +72,11 @@ hasura.user // will be reset to anonymous user
     
 For example:
     
-Option 1:
+```Option 1:
 
 Use lambdas or anonymous functions directly for handling success/error.
 
-```hasura.data.query({
+hasura.data.query({
   type: 'select',
   args: {
     table: 'article',
@@ -84,13 +84,13 @@ Use lambdas or anonymous functions directly for handling success/error.
   }},
   (data) => { console.log(data); },
   (error) => { console.log(error); }
-);```
+);
 
 Option 2:
 
-Use predefined functions
+Use predefined functions as shown below:
 
-```function mySuccessHandler (data) {
+function mySuccessHandler (data) {
   console.log(data);
 }
 
