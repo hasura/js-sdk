@@ -106,31 +106,6 @@ hasura.data.query({
   myErrorHandler
 );
 ```
-
-The Data Query can be implemented as:
-```javascript
-// This will use the hasura.user session object to send
-// if hasura.user.token === null, then request is made as an anonymous user (no auth token)
-hasura.data.query({
-    type: 'select',
-    args: {
-        table: 'test',
-        columns: ['*']
-    }},
-    onSuccess,
-    onError);
-
-// Query with a specific role
-hasura.data.queryAsRole('user'
-    type: 'select',
-    args: {
-        table: 'test',
-        columns: ['*']
-    }},
-    onSuccess,
-    onError);
-```
-
 ### Data query-templates
 
 **NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
