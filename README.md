@@ -70,7 +70,7 @@ hasura.user // will be reset to anonymous user
     
 For example:
     
-Option 1:
+**Option 1:**
 
 Use lambdas or anonymous functions directly for handling success/error.
 
@@ -85,7 +85,7 @@ hasura.data.query({
   (error) => { console.log(error); }
 );
 ```
-Option 2:
+**Option 2:**
 
 Use predefined functions as shown below:
 
@@ -109,6 +109,7 @@ hasura.data.query({
 );
 ```
 
+The Data Query can be implemented as:
 ```javascript
 // This will use the hasura.user session object to send
 // if hasura.user.token === null, then request is made as an anonymous user (no auth token)
