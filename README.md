@@ -65,32 +65,45 @@ hasura.user // will be reset to anonymous user
 ```
 
 ### Data query
+       
+**Option 1:**
 
-**NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
+Use lambdas or anonymous functions directly for handling success/error.
 
 ```javascript
-// This will use the hasura.user session object to send
-// if hasura.user.token === null, then request is made as an anonymous user (no auth token)
 hasura.data.query({
-    type: 'select',
-    args: {
-        table: 'test',
-        columns: ['*']
-    }},
-    onSuccess,
-    onError);
-
-// Query with a specific role
-hasura.data.queryAsRole('user'
-    type: 'select',
-    args: {
-        table: 'test',
-        columns: ['*']
-    }},
-    onSuccess,
-    onError);
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }},
+  (data) => { console.log(data); },
+  (error) => { console.log(error); }
+);
 ```
+**Option 2:**
 
+Use predefined functions as shown below:
+
+```javascript
+function mySuccessHandler (data) {
+  console.log(data);
+}
+
+function myErrorHandler (e) {
+  console.log(e);
+}
+
+hasura.data.query({
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }},
+  mySuccessHandler,
+  myErrorHandler
+);
+```
 ### Data query-templates
 
 **NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
