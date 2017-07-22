@@ -85,11 +85,9 @@ hasura.data.query({
   (error) => { console.log(error); }
 );
 ```
-
 Option 2:
 
 Use predefined functions as shown below:
-
 
 ```javascript
 function mySuccessHandler (data) {
