@@ -70,11 +70,11 @@ hasura.user // will be reset to anonymous user
     
 For example:
     
-```
 Option 1:
 
 Use lambdas or anonymous functions directly for handling success/error.
 
+```javascript
 hasura.data.query({
   type: 'select',
   args: {
@@ -83,12 +83,14 @@ hasura.data.query({
   }},
   (data) => { console.log(data); },
   (error) => { console.log(error); }
-);
+);```
 
 Option 2:
 
 Use predefined functions as shown below:
 
+
+```javascript
 function mySuccessHandler (data) {
   console.log(data);
 }
@@ -105,10 +107,9 @@ hasura.data.query({
   }},
   mySuccessHandler,
   myErrorHandler
-);```
-  
+);
 
-```javascript
+
 // This will use the hasura.user session object to send
 // if hasura.user.token === null, then request is made as an anonymous user (no auth token)
 hasura.data.query({
