@@ -8,9 +8,9 @@ Add this to your HTML:
 ```html
 <body>
     ...
-    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.1/hasura.min.js"></script>
+    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.2/hasura.min.js"></script>
     <script>
-        hasura.setProjectName('hello70'); // If your hasura project is hello70.hasura-app.io
+        hasura.setProject('hello70'); // If your hasura project is hello70.hasura-app.io
     </script>
 </body>
 ```
@@ -20,7 +20,7 @@ Add this to your HTML:
 ```html
 <body>
     ...
-    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.1/hasura.min.js"></script>
+    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.2/hasura.min.js"></script>
     <script>
         hasura.setBaseDomain('c103.hasura.me');
         hasura.disableHttps(); // No HTTPS enabled on local-development
@@ -141,11 +141,10 @@ The Hasura JS SDK provides convenience functions to upload and download files.
 ```
 
 ```javascript
-    var input = document.getElementById('my-file');
-    var file = input.files[0];
+    var fileInput = document.getElementById('my-file');
     var fileId;
     hasura.file.upload(
-      file,
+      fileInput,
       (successResponse) => {
         fileId = successResponse.file_id;
         console.log('Uploaded file: ' + fileId);
