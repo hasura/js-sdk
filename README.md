@@ -42,8 +42,8 @@ hasura.user // Will be anonymous user
 // }
 
 /* Login and create new session */
-hasura.setUsername('user1'); // Will set curename for current object and save to localStorage
-hasura.login('user1password', onSuccess, onError); // Will log the current user
+hasura.setUsername('user1'); // Will set username for current object and save to localStorage
+hasura.auth.login('user1password', onSuccess, onError); // Will log the current user
 hasura.user // will be logged in user
 // {
 //     username: 'user1',
