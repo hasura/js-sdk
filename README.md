@@ -8,9 +8,9 @@ Add this to your HTML:
 ```html
 <body>
     ...
-    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.1/hasura.min.js"></script>
+    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.2/hasura.min.js"></script>
     <script>
-        hasura.setProjectName('hello70'); // If your hasura project is hello70.hasura-app.io
+        hasura.setProject('hello70'); // If your hasura project is hello70.hasura-app.io
     </script>
 </body>
 ```
@@ -20,7 +20,7 @@ Add this to your HTML:
 ```html
 <body>
     ...
-    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.1/hasura.min.js"></script>
+    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.2/hasura.min.js"></script>
     <script>
         hasura.setBaseDomain('c103.hasura.me');
         hasura.disableHttps(); // No HTTPS enabled on local-development
@@ -42,8 +42,8 @@ hasura.user // Will be anonymous user
 // }
 
 /* Login and create new session */
-hasura.setUsername('user1'); // Will set curename for current object and save to localStorage
-hasura.login('user1password', onSuccess, onError); // Will log the current user
+hasura.setUsername('user1'); // Will set username for current object and save to localStorage
+hasura.auth.login('user1password', onSuccess, onError); // Will log the current user
 hasura.user // will be logged in user
 // {
 //     username: 'user1',
@@ -65,32 +65,45 @@ hasura.user // will be reset to anonymous user
 ```
 
 ### Data query
+       
+**Option 1:**
 
-**NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
+Use lambdas or anonymous functions directly for handling success/error.
 
 ```javascript
-// This will use the hasura.user session object to send
-// if hasura.user.token === null, then request is made as an anonymous user (no auth token)
 hasura.data.query({
-    type: 'select',
-    args: {
-        table: 'test',
-        columns: ['*']
-    },
-    onSuccess,
-    onError);
-
-// Query with a specific role
-hasura.data.queryAsRole('user'
-    type: 'select',
-    args: {
-        table: 'test',
-        columns: ['*']
-    },
-    onSuccess,
-    onError);
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }},
+  (data) => { console.log(data); },
+  (error) => { console.log(error); }
+);
 ```
+**Option 2:**
 
+Use predefined functions as shown below:
+
+```javascript
+function mySuccessHandler (data) {
+  console.log(data);
+}
+
+function myErrorHandler (e) {
+  console.log(e);
+}
+
+hasura.data.query({
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }},
+  mySuccessHandler,
+  myErrorHandler
+);
+```
 ### Data query-templates
 
 **NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
@@ -188,11 +201,10 @@ The Hasura JS SDK provides convenience functions to upload and download files.
 ```
 
 ```javascript
-    var input = document.getElementById('my-file');
-    var file = input.files[0];
+    var fileInput = document.getElementById('my-file');
     var fileId;
     hasura.file.upload(
-      file,
+      fileInput,
       (successResponse) => {
         fileId = successResponse.file_id;
         console.log('Uploaded file: ' + fileId);
@@ -209,6 +221,59 @@ The Hasura JS SDK provides convenience functions to upload and download files.
     hasura.file.delete(fileId);
 ```
 
+### API requests to custom APIs deployed on Hasura
+
+The Hasura JS SDK provides a simple wrapper over `fetch` to make it easy
+for you to make API requests to APIs deployed as custom microservices on Hasura.
+
+**If you're making a JSON request:**
+```javascript
+    hasura.fetch.upload(
+      {
+        service: 'api',  // the name of your custom service
+        path: '/submit', // the path
+        method: 'POST',  // HTTP method (this is POST by default, so you can ignore this key if it's POST)
+        json: {...},     // set this to an object or an array that will be serialised to make the request body
+        headers: {
+          'X-Custom-Header': '...'
+        }
+      },
+      (jsonResponse) => {
+          // your success handler function
+          console.log(jsonResponse);
+
+          // By the way, jsonResponse is an object or an array
+          // if the response content-type is application/json
+          console.assert(typeof(jsonResponse) === 'object');
+      },
+      (error) => {
+        // your error handler function
+        console.error(error);
+      });
+```
+
+**If you're making a request with a non JSON content-type:**
+```javascript
+    hasura.fetch.upload(
+      {
+        service: 'api',  // the name of your custom service
+        path: '/submit', // the path
+        method: 'POST',  // HTTP method (this is POST by default, so you can ignore this key if it's POST)
+        body: '...',     // set this to a string or a serialised value
+        headers: {
+          'Content-Type': '...' // you must set the content-type, because the default content-type is set to application/json
+        }
+      },
+      (response) => {
+          // your success handler function
+          console.log(response);
+
+      },
+      (error) => {
+        // your error handler function
+        console.error(error);
+      });
+```
 
 # Contribution & Development
 
