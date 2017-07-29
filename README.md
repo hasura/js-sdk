@@ -176,7 +176,17 @@ Initialize Google SDK as follows
 ```
 To login:
   ```javascript
-    hasura.auth.googleLogin( GoogleAuth, setSigninStatus );
+    hasura.auth.googleLogin( GoogleAuth, setSigninStatus);
+
+    function setSigninStatus() {
+      var isAuthorized = hasura.user.username !== 'anonymous';
+      if (isAuthorized) {
+        // DOM manipulation
+      } else {
+        // DOM manipulation
+      }
+    }
+ 
   ```
 To Logout:
   ```javascript
