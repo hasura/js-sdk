@@ -183,14 +183,7 @@ To Logout:
     hasura.auth.logout( () => { setSigninStatus(); GoogleAuth.disconnect(); });
   ```
 
-Take a look at the example integration here
-
-
-```html
-    <input id="my-file" type="file" />
-```
-
-
+Take a look at the example integration [here](examples/GoogleAuth.html)
 
 ### Filestore usage
 
