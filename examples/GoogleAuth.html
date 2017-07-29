@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>js-sdk test</title>
+    </head>
+    <body>
+        <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.2/hasura.min.js"></script>
+        <script>
+            // hasura.disableHttps();
+            hasura.setBaseDomain('<PROJECT_NAME>.hasura-app.io');
+        </script>
+        <script>
+          var GoogleAuth;
+          var SCOPE = 'profile';
+          function handleClientLoad() {
+            // Load the API's client and auth2 modules.
+            // Call the initClient function after the modules load.
+            gapi.load('client:auth2', initClient);
+          }
+          
+          function initClient() {
+            // Initialize the gapi.client object, which app uses to make API requests.
+            // Get API key and client ID from API Console.
+            // 'scope' field specifies space-delimited list of access scopes.
+            gapi.client.init({
+              'clientId': '<CLIENT_ID>',
+              'scope': SCOPE 
+            }).then(function () {
+              GoogleAuth = gapi.auth2.getAuthInstance();
+          
+              // Listen for sign-in state changes.
+              GoogleAuth.isSignedIn.listen(updateSigninStatus);
+
+              // Disconnect the user if the user has already signed in 
+              GoogleAuth.disconnect();
+          
+              // Handle initial sign-in state. (Determine if user is already signed in.)
+              var user = GoogleAuth.currentUser.get();
+              setSigninStatus();
+          
+              // Call handleAuthClick function when user clicks on
+              //      "Sign In/Authorize" button.
+              $('#sign-in-or-out-button').click(function() {
+                handleAuthClick();
+              }); 
+            });
+          }
+          
+          function handleAuthClick() {
+            if (hasura.user.username !== 'anonymous') {
+              // User is authorized and has clicked 'Sign out' button.
+              console.log('Logging out ...');
+              hasura.auth.logout( () => { setSigninStatus(); GoogleAuth.disconnect(); });
+            } else {
+              // User is not signed in. Start Google auth flow.
+              GoogleAuth.signIn();
+            }
+          }
+          
+          function setSigninStatus(isSignedIn) {
+            var isAuthorized = hasura.user.username !== 'anonymous';
+            if (isAuthorized) {
+              $('#sign-in-or-out-button').html('Sign out');
+              $('#auth-status').html('You are currently signed in and have granted ' +
+                'access to this app.');
+            } else {
+              $('#sign-in-or-out-button').html('Sign In/Authorize');
+              $('#auth-status').html('You have not authorized this app or you are ' +
+                'signed out.');
+            }
+          }
+          
+          function updateSigninStatus(isSignedIn) {
+            if ( isSignedIn ) {
+              hasura.auth.googleLogin( GoogleAuth, setSigninStatus );
+            }
+            setSigninStatus();
+          }
+        </script>
+
+        <button id="sign-in-or-out-button"
+                style="margin-left: 25px">Sign In/Authorize</button>
+
+        <div id="auth-status" style="display: inline; padding-left: 25px"></div><hr>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script async defer src="https://apis.google.com/js/api.js" 
+                            onload="this.onload=function(){};handleClientLoad()" 
+                            onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+    </body>
+</html>

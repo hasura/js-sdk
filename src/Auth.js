@@ -82,6 +82,39 @@ class Auth {
       });
   }
 
+  googleLogin ( GoogleAuth, onSuccess, onError = defaultExceptionHandler ) {
+    /* Requires GoogleAuth global object to function */
+    if ( GoogleAuth ) {
+      const currentUser = GoogleAuth.currentUser.get();
+      const authData = currentUser.getAuthResponse();
+      const id = currentUser.getId();
+
+      if ( Object.keys(authData).length !== 0 ) {
+        this.hasura.fetch(
+          { service: 'auth', path: '/google/authenticate?id_token=' + authData.id_token, method: 'GET' },
+          ( user ) => {
+            this.hasura.user = {
+              ...this.hasura.user,
+              id: user.hasura_id,
+              roles: user.hasura_roles,
+              token: user.auth_token,
+              username: 'google:' + id
+            };
+            this.hasura.saveUser();
+            onSuccess();
+          },
+          (r) => {
+            console.log(r);
+            onError();
+          });
+        return;
+      }
+      console.error('Could\'t find user information, Error could be because user is not logged into Google');
+      return;
+    }
+    console.error('Hasura requires a valid Google auth instance to authenticate. Checkout https://github.com/hasura/js-sdk for more info');
+  }
+
 }
 
 export default Auth;

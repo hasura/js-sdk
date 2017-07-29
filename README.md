@@ -119,6 +119,66 @@ hasura.data.queryTemplateAsRole(
     onError);
 ```
 
+### Enable Google Login
+
+The Hasura JS SDK provides helper functions to quickly add Google Sign in to your application
+
+Prerequisites:
+  - Google OAuth2 Application
+
+Initialization
+
+Initialize Google SDK as follows
+
+```javascript
+  <script async defer src="https://apis.google.com/js/api.js" 
+                          onload="this.onload=function(){};handleClientLoad()" 
+                          onreadystatechange="if (this.readyState === 'complete') this.onload()">
+
+  var GoogleAuth;
+  var SCOPE = 'profile';
+  function handleClientLoad() {
+    // Load the API's client and auth2 modules.
+    // Call the initClient function after the modules load.
+    gapi.load('client:auth2', initClient);
+  }
+  
+  function initClient() {
+    // Initialize the gapi.client object, which app uses to make API requests.
+    // Get API key and client ID from API Console.
+    // 'scope' field specifies space-delimited list of access scopes.
+    gapi.client.init({
+      'clientId': '<CLIENT_ID>',
+      'scope': SCOPE 
+    }).then(function () {
+      GoogleAuth = gapi.auth2.getAuthInstance();
+  
+      // Listen for sign-in state changes.
+      GoogleAuth.isSignedIn.listen(<callback function to handle state changes>);
+
+      // Disconnect the user if the user has already signed in 
+      GoogleAuth.disconnect();
+    });
+  }
+```
+To login:
+  ```javascript
+    hasura.auth.googleLogin( GoogleAuth, setSigninStatus );
+  ```
+To Logout:
+  ```javascript
+    hasura.auth.logout( () => { setSigninStatus(); GoogleAuth.disconnect(); });
+  ```
+
+Take a look at the example integration here
+
+
+```html
+    <input id="my-file" type="file" />
+```
+
+
+
 ### Filestore usage
 
 The Hasura JS SDK provides convenience functions to upload and download files.
