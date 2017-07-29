@@ -137,9 +137,7 @@ hasura.data.queryTemplateAsRole(
 The Hasura JS SDK provides helper functions to quickly add Google Sign in to your application
 
 Prerequisites:
-  - Google OAuth2 Application
-
-Initialization
+  - [Google OAuth2 Application](https://developers.google.com/identity/protocols/OAuth2UserAgent#creatingcred)
 
 Initialize Google SDK as follows
 
