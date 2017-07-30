@@ -38,11 +38,11 @@ class Auth {
           this.hasura.user.token = user.auth_token;
         }
         this.hasura.saveUser();
-        onSuccess();
+        onSuccess(user);
       },
       (r) => {
         console.log(r);
-        onError();
+        onError(r);
       });
   }
   login (password, onSuccess, onError = defaultExceptionHandler) {
@@ -61,11 +61,11 @@ class Auth {
           token: user.auth_token
         };
         this.hasura.saveUser();
-        onSuccess();
+        onSuccess(user);
       },
       (r) => {
         console.log(r);
-        onError();
+        onError(r);
       });
   }
 
@@ -78,7 +78,7 @@ class Auth {
       },
       (r) => {
         console.log(r);
-        onError();
+        onError(r);
       });
   }
 
