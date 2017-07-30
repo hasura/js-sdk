@@ -12,7 +12,7 @@ class Auth {
    * }
    *
    */
-  signup (password, options, onSuccess, onError = defaultExceptionHandler) {
+  signup (password, onSuccess, onError = defaultExceptionHandler) {
     if (this.hasura.user.token) {
       logError('A user session already exists. Use this.hasura.logout() first?');
       return;
