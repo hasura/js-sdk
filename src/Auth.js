@@ -15,6 +15,7 @@ class Auth {
   signup (password, onSuccess, onError = defaultExceptionHandler) {
     if (this.hasura.user.token) {
       logError('A user session already exists. Use this.hasura.logout() first?');
+      onError({'code': 'already-logged-in'});
       return;
     }
 
@@ -48,6 +49,7 @@ class Auth {
   login (password, onSuccess, onError = defaultExceptionHandler) {
     if (this.hasura.user.token) {
       logError('A user session already exists. Use this.hasura.logout() first?');
+      onError({'code': 'already-logged-in'});
       return;
     }
 
