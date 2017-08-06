@@ -8,7 +8,7 @@ Add this to your HTML:
 ```html
 <body>
     ...
-    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.2/hasura.min.js"></script>
+    <script src="https://github.com/hasura/js-sdk/releases/download/v0.1.3/hasura.min.js"></script>
     <script>
         hasura.setProject('hello70'); // If your hasura project is hello70.hasura-app.io
     </script>
