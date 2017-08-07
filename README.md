@@ -168,7 +168,7 @@ for you to make API requests to APIs deployed as custom microservices on Hasura.
 
 **If you're making a JSON request:**
 ```javascript
-    hasura.fetch.upload(
+    hasura.fetch(
       {
         service: 'api',  // the name of your custom service
         path: '/submit', // the path
@@ -194,7 +194,7 @@ for you to make API requests to APIs deployed as custom microservices on Hasura.
 
 **If you're making a request with a non JSON content-type:**
 ```javascript
-    hasura.fetch.upload(
+    hasura.fetch(
       {
         service: 'api',  // the name of your custom service
         path: '/submit', // the path
