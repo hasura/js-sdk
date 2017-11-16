@@ -119,7 +119,7 @@ hasura.data.query({
 );
 ```
 
-**Option 2:**
+**Option 3:**
 
 Use promises:
 
