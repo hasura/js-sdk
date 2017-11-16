@@ -6,6 +6,7 @@ class Auth {
 
   constructor (hasura) {
     this.hasura = hasura;
+    this.apiVersion = 'v1';
   }
 
   /* options: {
@@ -20,16 +21,17 @@ class Auth {
       return;
     }
 
-    const body = { username: this.hasura.user.username, password };
-    if (this.hasura.user.email) {
-      body.email = this.hasura.user.email;
-    }
-    if (this.hasura.user.mobile) {
-      body.mobile = this.hasura.user.mobile;
-    }
+    const body = {
+      provider: 'username',
+      data: {
+        username: this.hasura.user.username,
+        password
+      }
+    };
 
+    var version = this.apiVersion;
     this.hasura.fetch(
-      {service: 'auth', path: '/signup', json: body},
+      {service: 'auth', path: version + '/signup', json: body},
       (user) => {
         this.hasura.user = {
           ...this.hasura.user,
@@ -55,8 +57,10 @@ class Auth {
       return;
     }
 
+    var version = this.apiVersion;
+
     this.hasura.fetch(
-      {service: 'auth', path: '/login', json: {username: this.hasura.user.username, password}},
+      {service: 'auth', path: version + '/login', json: {username: this.hasura.user.username, password}},
       (user) => {
         this.hasura.user = {
           ...this.hasura.user,
@@ -74,8 +78,9 @@ class Auth {
   }
 
   logout (onSuccess, onError = defaultExceptionHandler) {
+    var version = this.apiVersion;
     this.hasura.fetch(
-      {service: 'auth', path: '/user/logout'},
+      {service: 'auth', path: version + '/user/logout'},
       () => {
         this.hasura.clearUser();
         onSuccess();
