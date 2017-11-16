@@ -12,6 +12,16 @@ class File {
     this.hasura = hasura;
   }
 
+  queryPromise(hasuraFetchOptions) {
+    return new Promise(function(resolve, reject) {
+      this.query(hasuraFetchOptions, function(response) {
+        resolve(response);
+      }, function(error) {
+        reject(error);
+      });
+    });
+  }
+
   query(hasuraFetchOptions, onSuccess, onError) {
     const opts = hasuraFetchOptions;
     this.hasura.fetch(
@@ -23,6 +33,16 @@ class File {
         logError(e);
         onError(e);
       });
+  }
+
+  uploadPromise(fileInput) {
+    return new Promise(function(resolve, reject) {
+      this.upload(fileInput, function(response) {
+        resolve(response);
+      }, function(error) {
+        reject(error);
+      });
+    });
   }
 
   upload(fileInput, onSuccess, onError = defaultExceptionHandler) {
@@ -53,12 +73,23 @@ class File {
     this.query(hasuraFetchOptions, onSuccess, onError);
   }
 
+  deletePromise(fileId) {
+    return new Promise(function(resolve, reject) {
+      this.delete(fileId, function(response) {
+        resolve(response);
+      }, function(error) {
+        reject(error);
+      });
+    });
+  }
+
   download(fileId) {
     var link = document.createElement('a');
     link.download = fileId;
     link.href = this.hasura.genUrl('filestore', `/v1/file/${fileId}`);
     link.click();
   }
+
 }
 
 export default File;

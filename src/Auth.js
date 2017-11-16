@@ -3,6 +3,7 @@ import logError from './logError';
 const defaultExceptionHandler = () => (0);
 
 class Auth {
+
   constructor (hasura) {
     this.hasura = hasura;
   }
@@ -46,6 +47,7 @@ class Auth {
         onError(r);
       });
   }
+
   login (password, onSuccess, onError = defaultExceptionHandler) {
     if (this.hasura.user.token) {
       logError('A user session already exists. Use this.hasura.logout() first?');
@@ -82,6 +84,43 @@ class Auth {
         console.log(r);
         onError(r);
       });
+  }
+
+  signUpPromise(password) {
+    var self = this;
+      return new Promise(function(resolve, reject) {
+          self.signup(password, function(response) {
+              resolve(response);
+          }, function(error) {
+              reject(error);
+          }, function(exception) {
+              reject(exception);
+          });
+      });
+  }
+
+  loginPromise(password) {
+    var self = this;
+      return new Promise(function(resolve, reject) {
+          self.login(password, function(response) {
+              resolve(response);
+          }, function(error) {
+              reject(error);
+          }, function(exception) {
+              reject(exception);
+          })
+      })
+  }
+
+  logoutPromise() {
+    var self = this;
+      return new Promise(function(resolve, reject) {
+          self.logout(function(response) {
+              resolve(response);
+          }, function(error) {
+              reject(error);
+          });
+      })
   }
 
 }

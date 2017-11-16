@@ -93,7 +93,7 @@ class hasura {
     this.saveUser();
   }
 
-  clearSesssion() { this.clearUser(); }
+  clearSession() { this.clearUser(); }
 
 }
 
