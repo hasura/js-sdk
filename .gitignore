@@ -1,6 +1,6 @@
 # Ignore built JS file
 build/js/*
-
+.idea
 # Logs
 logs
 *.log
