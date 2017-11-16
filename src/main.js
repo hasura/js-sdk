@@ -17,7 +17,6 @@ class hasura {
    * hasura.user
    * hasura.auth (signup/login/logout)
    * hasura.data.query({}, onSuccess, onError)
-   * hasura.data.queryTemplate({}, onSuccess, onError)
    * hasura.fetch(options, onSuccess, onError)
    */
   constructor () {
