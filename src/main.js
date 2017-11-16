@@ -32,7 +32,6 @@ class hasura {
       scheme: 'https',
       baseDomain: null
     };
-
     this.resetFetch();
     this.auth = new Auth(this);
     this.data = new Data(this);
