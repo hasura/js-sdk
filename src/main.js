@@ -41,6 +41,16 @@ class hasura {
 
   resetFetch() {
     this.fetch = hasuraFetch(this.user, this.projectConfig);
+    var self = this;
+    this.fetchPromise = (query) => {
+      return new Promise(function(resolve, reject) {
+        self.fetch(query, function(response) {
+          resolve(response);
+        }, function(error) {
+          reject(error);
+        })
+      });
+    };
     this.genUrl = hasuraGenUrl(this.projectConfig);
     return this;
   }
