@@ -41,9 +41,19 @@ hasura.user // Will be anonymous user
 //     token: null
 // }
 
+/* SignUp/register a new user */
+hasura.setUsername('user1'); // Will set username for current object and save to localStorage
+hasura.auth.signup('user1password', onSuccess, onError); // Will log the current user
+//Or using a promise
+hasura.auth.signup('user1password').then(function(response) {}, function(error) {});
+
 /* Login and create new session */
 hasura.setUsername('user1'); // Will set username for current object and save to localStorage
 hasura.auth.login('user1password', onSuccess, onError); // Will log the current user
+//Or using a promise
+hasura.auth.loginPromise('user1password').then(function(response) {}, function(error) {});
+
+//After signup/login
 hasura.user // will be logged in user
 // {
 //     username: 'user1',
@@ -60,7 +70,11 @@ hasura.user // will be the logged in user
 //     roles: ['user'],
 //     token: 'xxxxxxxxxxxxxxxx'
 // }
+
 hasura.auth.logout(onSuccess, onError);
+//Or using a promise
+hasura.auth.logoutPromise().then(function(response) {}, function(error) {});
+
 hasura.user // will be reset to anonymous user
 ```
 
@@ -104,32 +118,23 @@ hasura.data.query({
   myErrorHandler
 );
 ```
-### Data query-templates
 
-**NOTE**: In the examples below, `onSuccess` and `onError` are callback functions that you must implement.
+**Option 2:**
+
+Use promises:
 
 ```javascript
-// This will use the hasura.user session object to send
-// if hasura.user.token === null, then request is made as an anonymous user (no auth token)
-hasura.data.queryTemplate(
-    'query-template-name',
-    {
-        param: <value>,
-        param2: <value2>
-    },
-    onSuccess,
-    onError);
-
-// Query with a specific role
-hasura.data.queryTemplateAsRole(
-    'user',
-    'query-template-name',
-    {
-        param: <value>,
-        param2: <value2>
-    },
-    onSuccess,
-    onError);
+hasura.data.queryPromise({
+  type: 'select',
+  args: {
+    table: 'article',
+    columns: ['*']
+  }
+}).then(function(response){
+    //handle response
+}, function(error) {
+    //handle error
+});
 ```
 
 ### Filestore usage
@@ -143,6 +148,7 @@ The Hasura JS SDK provides convenience functions to upload and download files.
 ```javascript
     var fileInput = document.getElementById('my-file');
     var fileId;
+
     hasura.file.upload(
       fileInput,
       (successResponse) => {
@@ -156,9 +162,16 @@ The Hasura JS SDK provides convenience functions to upload and download files.
         // your code goes here
       });
 
+    //You can also implement the above using promises instead of callbacks
+    hasura.file.uploadPromise(fileInput).then(function(response) {}, function(error) {});
+
     hasura.file.download(fileId); // This will use the HTML5 download attribute to start downloading the file
 
-    hasura.file.delete(fileId);
+    hasura.file.delete(fileId,
+    (successResponse) => {},
+    (errorResponse) => {});
+    //Using promises
+    hasura.file.deletePromise(fileId).then(function(response) {}, function(error) {});
 ```
 
 ### API requests to custom APIs deployed on Hasura
@@ -213,6 +226,25 @@ for you to make API requests to APIs deployed as custom microservices on Hasura.
         // your error handler function
         console.error(error);
       });
+```
+
+**You can also make the above call using promises**
+```javascript
+    hasura.fetchPromise({
+      service: 'api',   // the name of your custom service
+      path: '/path',    // the path
+      method: 'POST',   // HTTP method (this is POST by default, so you can ignore this key if it's POST)
+      json: {...},       // or body: '' if its not a JSON request
+      headers: {
+        'Content-Type': '...' // you must set the content-type, because the default content-type is set to application/json
+      }
+    }).then(function(response) {
+        // your success handler function
+        console.log(response);
+    }, function(error) {
+        //your error handler function
+        console.log(error);
+    });
 ```
 
 # Contribution & Development
