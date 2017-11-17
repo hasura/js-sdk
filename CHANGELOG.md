@@ -1,3 +1,7 @@
+v0.1.5
+------
+- Changes auth apis to handle the new apis with hasura v0.15
+
 v0.1.4
 ------
 - Adds new methods returning promise (for eg: signup will now have a signupPromise which will return a promise)
