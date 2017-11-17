@@ -31,7 +31,7 @@ class Auth {
 
     var version = this.apiVersion;
     this.hasura.fetch(
-      {service: 'auth', path: version + '/signup', json: body},
+      {service: 'auth', path: '/' + version + '/signup', json: body},
       (user) => {
         this.hasura.user = {
           ...this.hasura.user,
@@ -60,7 +60,7 @@ class Auth {
     var version = this.apiVersion;
 
     this.hasura.fetch(
-      {service: 'auth', path: version + '/login', json: {username: this.hasura.user.username, password}},
+      {service: 'auth', path: '/' + version + '/login', json: {username: this.hasura.user.username, password}},
       (user) => {
         this.hasura.user = {
           ...this.hasura.user,
@@ -80,7 +80,7 @@ class Auth {
   logout (onSuccess, onError = defaultExceptionHandler) {
     var version = this.apiVersion;
     this.hasura.fetch(
-      {service: 'auth', path: version + '/user/logout'},
+      {service: 'auth', path: '/' + version + '/user/logout'},
       () => {
         this.hasura.clearUser();
         onSuccess();
